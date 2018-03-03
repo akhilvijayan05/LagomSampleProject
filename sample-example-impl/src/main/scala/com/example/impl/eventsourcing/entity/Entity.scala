@@ -1,11 +1,12 @@
-package com.example.api.eventsourcing.entity
+package com.example.impl.eventsourcing.entity
 
 import java.time.LocalDateTime
 
 import akka.Done
-import com.example.api.eventsourcing.command.{LagomCommand, NewCommand}
-import com.example.api.eventsourcing.event.{LagomEvent, NewEvent}
-import com.example.api.eventsourcing.state.NewState
+import com.example.impl.eventsourcing.command.{LagomCommand, NewCommand}
+import com.example.impl.eventsourcing.event.{LagomEvent, NewEvent}
+import com.example.impl.eventsourcing.state.NewState
+import com.example.models.Request
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity
 
 class Entity extends PersistentEntity {
@@ -14,7 +15,7 @@ class Entity extends PersistentEntity {
   override type Event = LagomEvent
   override type State = NewState
 
-  override def initialState: NewState = NewState("initial", LocalDateTime.now.toString)
+  override def initialState: NewState = NewState(Request("none","initial"), LocalDateTime.now.toString)
 
   override def behavior: Behavior = {
     case NewState(message, _) => Actions().onCommand[NewCommand, Done] {

@@ -32,4 +32,8 @@ lazy val `sample-example-impl` = (project in file("sample-example-impl"))
   .settings(lagomForkedTestSettings: _*)
   .dependsOn(`sample-example-api`, `models`)
 
-lazy val `models` = project in file("models")
+lazy val `models` = (project in file("models"))
+  .settings( libraryDependencies +="com.typesafe.play" %% "play-json" % "2.6.7")
+
+lagomCassandraEnabled in ThisBuild := false
+lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")

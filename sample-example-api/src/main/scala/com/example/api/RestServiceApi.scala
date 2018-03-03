@@ -1,6 +1,6 @@
 package com.example.api
 
-import com.example.models.Request
+import com.example.models.{Request, Response}
 import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
 
 trait RestServiceApi extends Service {
@@ -14,5 +14,5 @@ trait RestServiceApi extends Service {
       .withAutoAcl(true)
   }
 
-  def postRequest(id: String): ServiceCall[Request, String]
+  def postRequest(id: String): ServiceCall[Request, Response]
 }
