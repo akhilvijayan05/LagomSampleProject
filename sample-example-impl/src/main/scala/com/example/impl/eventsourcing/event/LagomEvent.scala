@@ -6,10 +6,10 @@ import play.api.libs.json.{Format, Json}
 
 
 sealed trait LagomEvent extends AggregateEvent[LagomEvent] {
-  def aggregateTag = LagomEventTag.Tag
+  def aggregateTag = LagomEvent.Tag
 }
 
-object LagomEventTag {
+object LagomEvent {
   val Tag = AggregateEventTag[LagomEvent]
 }
 

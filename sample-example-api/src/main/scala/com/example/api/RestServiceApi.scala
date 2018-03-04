@@ -9,10 +9,10 @@ trait RestServiceApi extends Service {
     import Service._
     named("sample-example")
       .withCalls(
-        pathCall("/example/:id", postRequest _)
+        pathCall("/example", postRequest)
       )
       .withAutoAcl(true)
   }
 
-  def postRequest(id: String): ServiceCall[Request, Response]
+  def postRequest: ServiceCall[Request, Response]
 }

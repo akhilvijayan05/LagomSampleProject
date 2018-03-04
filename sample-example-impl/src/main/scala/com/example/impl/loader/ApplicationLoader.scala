@@ -2,6 +2,7 @@ package com.example.impl.loader
 
 import com.example.api.RestServiceApi
 import com.example.impl.eventsourcing.entity.Entity
+import com.example.impl.eventsourcing.event.LagomEvent
 import com.example.impl.service.RestServiceImpl
 import com.lightbend.lagom.scaladsl.api.ServiceLocator
 import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
@@ -10,6 +11,8 @@ import com.lightbend.lagom.scaladsl.server.{LagomApplication, LagomApplicationCo
 import play.api.libs.ws.ahc.AhcWSComponents
 import com.softwaremill.macwire._
 import com.example.impl.eventsourcing.registry.SerializerRegistry
+import com.example.impl.processor.CassandraReadSideProcessor
+import com.example.impl.repository.CassandraDatabase
 
 class ApplicationLoader extends LagomApplicationLoader {
 
@@ -32,4 +35,6 @@ abstract class Application(context: LagomApplicationContext)
   override lazy val lagomServer = serverFor[RestServiceApi](wire[RestServiceImpl])
   override lazy val jsonSerializerRegistry = SerializerRegistry
   persistentEntityRegistry.register(wire[Entity])
+  val cassandraDatabase = new CassandraDatabase(cassandraSession)
+  readSide.register[LagomEvent](new CassandraReadSideProcessor(cassandraReadSide, cassandraDatabase))
 }
