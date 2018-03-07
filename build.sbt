@@ -6,6 +6,8 @@ scalaVersion in ThisBuild := "2.12.4"
 
 val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
+val jestClient = "io.searchbox" % "jest" % "5.3.3"
+val mockiTo = "org.mockito" % "mockito-core" % "2.15.0" % Test
 
 lazy val `lagom-sample-project` = (project in file("."))
   .aggregate(`sample-example-api`, `sample-example-impl`, `models`)
@@ -26,7 +28,9 @@ lazy val `sample-example-impl` = (project in file("sample-example-impl"))
       lagomScaladslKafkaBroker,
       lagomScaladslTestKit,
       macwire,
-      scalaTest
+      scalaTest,
+      jestClient,
+      mockiTo
     )
   )
   .settings(lagomForkedTestSettings: _*)
@@ -37,3 +41,5 @@ lazy val `models` = (project in file("models"))
 
 lagomCassandraEnabled in ThisBuild := false
 lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")
+
+lagomKafkaEnabled in ThisBuild := false
