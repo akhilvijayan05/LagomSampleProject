@@ -33,7 +33,6 @@ abstract class Application(context: LagomApplicationContext)
     with AhcWSComponents
     with CassandraPersistenceComponents {
 
-  val jestClient = wire[JestClient]
   override lazy val lagomServer = serverFor[RestServiceApi](wire[RestServiceImpl])
   override lazy val jsonSerializerRegistry = SerializerRegistry
   persistentEntityRegistry.register(wire[Entity])
