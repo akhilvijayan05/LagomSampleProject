@@ -6,6 +6,7 @@ scalaVersion in ThisBuild := "2.12.4"
 
 val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
+val kafkaStream = "org.apache.kafka" % "kafka-streams" % "1.0.1"
 
 lazy val `lagom-sample-project` = (project in file("."))
   .aggregate(`sample-example-api`, `sample-example-impl`, `models`)
@@ -26,7 +27,8 @@ lazy val `sample-example-impl` = (project in file("sample-example-impl"))
       lagomScaladslKafkaBroker,
       lagomScaladslTestKit,
       macwire,
-      scalaTest
+      scalaTest,
+      kafkaStream
     )
   )
   .settings(lagomForkedTestSettings: _*)
