@@ -10,6 +10,7 @@ import org.apache.kafka.streams.kstream.{KStream, Produced}
 
 object StreamClass extends App {
 
+  println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>Inside the class<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ")
   val config: Properties = {
     val p = new Properties()
     p.put(StreamsConfig.APPLICATION_ID_CONFIG, "wordcount-application")
@@ -18,7 +19,7 @@ object StreamClass extends App {
     p.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass)
     p
   }
-
+  println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>After config<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ")
   val builder = new StreamsBuilder
   val streams: KafkaStreams = new KafkaStreams(builder.build(), config)
   streams.start()
@@ -33,7 +34,10 @@ object StreamClass extends App {
   val textLines: KStream[Array[Byte], String] = builder.stream("MyTopic")
 
   // Variant 1: using `mapValues`
-  val uppercasedWithMapValues: KStream[Array[Byte], String] = textLines.mapValues(_.toUpperCase())
+  println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>Before the map operation<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ")
+  val uppercasedWithMapValues: KStream[Array[Byte], String] = textLines.mapValues{data =>
+  println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>Data>>>>>> " + data)
+    data.toUpperCase()}
 
   // Write (i.e. persist) the results to a new Kafka topic called "UppercasedTextLinesTopic".
   //
@@ -66,7 +70,7 @@ object StreamClass extends App {
   // In this case we must explicitly set the correct serializers because the default serializers
   // (cf. streaming configuration) do not match the type of this particular KStream instance.
   originalAndUppercased.to("OriginalAndUppercasedTopic", Produced.`with`(stringSerde, stringSerde))
-
-  val stream: KafkaStreams = new KafkaStreams(builder.build(), config)
-  stream.start()
+//
+//  val stream: KafkaStreams = new KafkaStreams(builder.build(), config)
+//  stream.start()
 }
