@@ -30,7 +30,7 @@ object StreamsKafka extends App {
     .groupBy((_, word) => word)
     .count(Materialized.as("counts-store").asInstanceOf[Materialized[String, Long, KeyValueStore[Bytes, Array[Byte]]]])
 
-  wordCounts.toStream().to("WordsWithCountsTopic", Produced.`with`(Serdes.String(), Serdes.Long()))
+  wordCounts.toStream().to("GetTopic", Produced.`with`(Serdes.String(), Serdes.Long()))
 
   val streams: KafkaStreams = new KafkaStreams(builder.build(), config)
   streams.start()
