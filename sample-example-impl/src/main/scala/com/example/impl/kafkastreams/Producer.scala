@@ -13,22 +13,21 @@ object Producer extends App {
   props.load(reader)
   val producer = new KafkaProducer[String, String](props)
 
-  var i = 0
-  while(true){
-    val producerRecord = new ProducerRecord[String, String]("MyTopic", i.toString, "Hello_Streams" + i.toString)
-    producer.send(producerRecord)
-    i += 1
-    Thread.sleep(2000)
-  }
-  /*
+//  var i = 0
+//  while(true){
+//    val producerRecord = new ProducerRecord[String, String]("MyTopic", i.toString, "Hello_Streams" + i.toString)
+//    producer.send(producerRecord)
+//    i += 1
+//    Thread.sleep(2000)
+//  }
   val list = List("Akhil", "Vijayan", "Akshansh", "Jain", "Sandeep", "Singh")
 
-    list.map { value =>
 
+    list.map { value =>
+      val producerRecord = new ProducerRecord[String, String]("MyTopic", value, value)
+      producer.send(producerRecord)
       println("Sending data: " + value)
 
     }
     producer.close()
-    true
-    */
 }
