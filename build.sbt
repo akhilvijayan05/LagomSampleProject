@@ -8,6 +8,7 @@ val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
 val kafkaStream = "org.apache.kafka" % "kafka-streams" % "1.0.1"
 val embeddedKafka = "net.manub" %% "scalatest-embedded-kafka" % "1.1.0" % "test"
+val embeddedKafkaStream = "net.manub" %% "scalatest-embedded-kafka-streams" % "1.1.0" % "test"
 
 lazy val `lagom-sample-project` = (project in file("."))
   .aggregate(`sample-example-api`, `sample-example-impl`, `models`)
@@ -30,7 +31,8 @@ lazy val `sample-example-impl` = (project in file("sample-example-impl"))
       macwire,
       scalaTest,
       kafkaStream,
-      embeddedKafka
+      embeddedKafka,
+      embeddedKafkaStream
     )
   )
   .settings(lagomForkedTestSettings: _*)
