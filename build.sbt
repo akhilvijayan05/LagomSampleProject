@@ -9,6 +9,8 @@ val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
 val kafkaStream = "org.apache.kafka" % "kafka-streams" % "1.0.1"
 val embeddedKafka = "net.manub" %% "scalatest-embedded-kafka" % "1.1.0" % "test"
 val embeddedKafkaStream = "net.manub" %% "scalatest-embedded-kafka-streams" % "1.1.0" % "test"
+val jestClient = "io.searchbox" % "jest" % "5.3.3"
+val mockiTo = "org.mockito" % "mockito-core" % "2.15.0" % Test
 
 lazy val `lagom-sample-project` = (project in file("."))
   .aggregate(`sample-example-api`, `sample-example-impl`, `models`)
@@ -32,7 +34,9 @@ lazy val `sample-example-impl` = (project in file("sample-example-impl"))
       scalaTest,
       kafkaStream,
       embeddedKafka,
-      embeddedKafkaStream
+      embeddedKafkaStream,
+      jestClient,
+      mockiTo
     )
   )
   .settings(lagomForkedTestSettings: _*)
