@@ -1,4 +1,4 @@
-package com.exampe.impl.service
+package com.example.impl.service
 
 import com.example.impl.es.JestClient
 import com.example.impl.service.RequestHandler
