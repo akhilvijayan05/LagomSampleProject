@@ -20,7 +20,7 @@ class ProducerSpec extends WordSpec with EmbeddedKafka with Matchers with Before
 
   "Producer" should {
     "publish message to a topic" in {
-      assert(produceData(Range(1, 10000).toList, "TestTopic"))
+      assert(produceData(List(1,2,3), "TestTopic") == "TestTopic")
     }
   }
 }

@@ -21,7 +21,7 @@ class StreamProducerSpec extends WordSpec with EmbeddedKafka with Matchers with 
 
   "StreamProducer" should {
     "publish message to a topic" in {
-      assert(produceData(List("abc", "cde"), "TestTopic"))
+      assert(produceData(List("abc", "cde"), "TestTopic") == "TestTopic")
     }
   }
 }

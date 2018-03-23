@@ -2,25 +2,32 @@ package com.example.impl.kafka
 
 import java.util.Properties
 
+import com.example.impl.utils.Constants
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 import scala.io.Source.fromURL
 
 trait Producer {
 
-  val reader = fromURL(getClass.getResource("/kafkaproducer.properties")).bufferedReader()
+  val reader = fromURL(getClass.getResource(Constants.KAFKA_STREAM_CONFIG_FILE)).bufferedReader()
   val props = new Properties()
   props.load(reader)
   val producer = new KafkaProducer[Integer, Integer](props)
 
-  def produceData(data: List[Int], topic: String): Boolean = {
+  def produceData(data: List[Int], topic: String): String = {
 
-    data.map { value =>
+    val kafkaTopicName = data.map { value =>
       val producerRecord = new ProducerRecord[Integer, Integer](topic, value, value)
-      println("Sending data: " + value+ " - "+ topic)
-      producer.send(producerRecord)
-    }
+      println("Sending data: " + value + " - " + topic)
+      val recordMetaData = producer.send(producerRecord)
+      recordMetaData.get().topic()
+    }.headOption
+
     producer.close()
-    true
+
+    kafkaTopicName match {
+      case Some(topicName) => topicName
+      case None => ""
+    }
   }
 }

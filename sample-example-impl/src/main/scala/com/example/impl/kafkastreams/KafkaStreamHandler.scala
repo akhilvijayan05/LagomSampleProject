@@ -3,6 +3,7 @@ package com.example.impl.kafkastreams
 import java.util.Properties
 import java.util.concurrent.TimeUnit
 
+import com.example.impl.utils.Constants
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
 import org.apache.kafka.streams.kstream.{KStream, Produced}
@@ -12,14 +13,13 @@ trait KafkaStreamHandler {
 
   val config: Properties = {
     val p = new Properties()
-    p.put(StreamsConfig.APPLICATION_ID_CONFIG, "application")
-    p.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
+    p.put(StreamsConfig.APPLICATION_ID_CONFIG, Constants.APPLICATION_ID_CONFIG)
+    p.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.BOOTSTRAP_SERVERS_CONFIG)
     p.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass)
     p.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass)
     p
   }
   val builder = new StreamsBuilder
-  //  streams.start()
 
   val stringSerde: Serde[String] = Serdes.String()
 
