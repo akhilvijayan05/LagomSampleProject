@@ -3,7 +3,7 @@ package com.example.impl.kafkastreams
 import java.util.Properties
 import java.util.concurrent.TimeUnit
 
-import com.example.impl.utils.Constants
+import com.example.impl.utils.constant.Constants
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
 import org.apache.kafka.streams.kstream.{KStream, Produced}

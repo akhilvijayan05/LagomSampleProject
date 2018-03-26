@@ -2,7 +2,7 @@ package com.example.impl.kafkastreams
 
 import java.util.Properties
 
-import com.example.impl.utils.Constants
+import com.example.impl.utils.constant.Constants
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 import scala.io.Source.fromURL
@@ -19,7 +19,6 @@ trait StreamProducer {
     val kafkaTopicName = data.map { value =>
       val producerRecord = new ProducerRecord[String, String](topic, value, value)
       val recordMetaData = producer.send(producerRecord)
-      println("Sending data: " + value)
       recordMetaData.get().topic()
     }.headOption
 

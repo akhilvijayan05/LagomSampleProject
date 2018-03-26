@@ -32,6 +32,17 @@ class RestServiceImplSpec extends AsyncWordSpec with Matchers with BeforeAndAfte
     }
   }
 
+  "The RestServiceImpl" should {
+    "fetch the stored data from elasticsearch" in {
+      val request = Request("1111")
+      when(mockedJestClient.getDocument(request)) thenReturn Request("1111", "Test Message")
+      client.getRequest.invoke(request).map { response =>
+        verify(mockedJestClient).getDocument(request)
+        response.message should ===("Test Message")
+      }
+    }
+  }
+
   override protected def beforeAll() = server
 
   override protected def afterAll() = server.stop()

@@ -34,7 +34,6 @@ class KafkaStreamHandlerSpec extends WordSpec with Matchers with BeforeAndAfterA
         // your test code goes here
         publishToKafka(initialTopic, key = "hello", message = "world")(emConfig,serializer,serializer)
         assert(streamProcessing(initialTopic))
-        // consumer.consumeLazily(outputTopic).head should be ("hello" -> "world")
       }
     }
   }

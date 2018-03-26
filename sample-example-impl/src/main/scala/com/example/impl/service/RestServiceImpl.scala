@@ -8,7 +8,7 @@ import com.example.models.{Request, Response}
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestClient: JestClient)(implicit ec: ExecutionContext) extends RestServiceApi {
@@ -17,7 +17,12 @@ class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestCl
 
     val ref = persistentEntityRegistry.refFor[Entity](request.id)
     ref.ask(NewCommand(request))
-    //    val jestClient = new JestClient()
-    new RequestHandler(jestClient).processRequest(request)
+    jestClient.createDocument(request)
+    Future(Response(s"Got ${request.message}"))
+  }
+
+  override def getRequest: ServiceCall[Request, Request] = ServiceCall { request: Request =>
+
+    Future(jestClient.getDocument(request))
   }
 }

@@ -20,7 +20,6 @@ trait Consumer {
     consumer.subscribe(Collections.singletonList(topic))
     val result = consumerPoll(topic, consumer.poll(5000), Map())
     consumer.close()
-    println("Done")
     result
   }
 
@@ -33,7 +32,6 @@ trait Consumer {
       val record = for {
         record <- records
       } yield {
-        System.out.println("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset())
         record.key() -> record.value()
       }
       consumerPoll(topic, consumer.poll(1000), data ++ record.toMap)
