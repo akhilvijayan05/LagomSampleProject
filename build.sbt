@@ -11,6 +11,7 @@ val embeddedKafka = "net.manub" %% "scalatest-embedded-kafka" % "1.1.0" % "test"
 val embeddedKafkaStream = "net.manub" %% "scalatest-embedded-kafka-streams" % "1.1.0" % "test"
 val jestClient = "io.searchbox" % "jest" % "5.3.3"
 val mockiTo = "org.mockito" % "mockito-core" % "2.15.0" % Test
+val kafkaAvroConfluent = "kafka-avro-confluent" % "kafka-avro-confluent" % "0.1.0"
 
 lazy val `lagom-sample-project` = (project in file("."))
   .aggregate(`sample-example-api`, `sample-example-impl`, `models`)
