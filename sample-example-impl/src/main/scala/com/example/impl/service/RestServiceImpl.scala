@@ -5,6 +5,7 @@ import com.example.api.RestServiceApi
 import com.example.impl.es.JestClient
 import com.example.impl.eventsourcing.command.NewCommand
 import com.example.impl.eventsourcing.entity.Entity
+import com.example.impl.logs.LogHandler
 import com.example.models.{Request, Response}
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
@@ -12,7 +13,7 @@ import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestClient: JestClient)(implicit ec: ExecutionContext) extends RestServiceApi {
+class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestClient: JestClient, logHandler: LogHandler)(implicit ec: ExecutionContext) extends RestServiceApi {
 
   override def postRequest: ServiceCall[Request, Response] = ServiceCall { request: Request =>
 
@@ -21,6 +22,7 @@ class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestCl
     result.map { status =>
       if (status == Done) {
         jestClient.createDocument(request)
+        logHandler.storeLogs("", request, Response("Message"), "TestTopic")
         Response(s"Got ${request.message}")
       } else {
         Response("Server Error. Please try later..")

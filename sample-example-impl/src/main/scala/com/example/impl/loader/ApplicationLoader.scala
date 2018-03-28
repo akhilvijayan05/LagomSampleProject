@@ -4,16 +4,17 @@ import com.example.api.RestServiceApi
 import com.example.impl.es.JestClient
 import com.example.impl.eventsourcing.entity.Entity
 import com.example.impl.eventsourcing.event.LagomEvent
+import com.example.impl.eventsourcing.registry.SerializerRegistry
+import com.example.impl.logs.LogHandler
+import com.example.impl.processor.CassandraReadSideProcessor
+import com.example.impl.repository.CassandraDatabase
 import com.example.impl.service.RestServiceImpl
 import com.lightbend.lagom.scaladsl.api.ServiceLocator
 import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
 import com.lightbend.lagom.scaladsl.persistence.cassandra.CassandraPersistenceComponents
 import com.lightbend.lagom.scaladsl.server.{LagomApplication, LagomApplicationContext, LagomApplicationLoader}
-import play.api.libs.ws.ahc.AhcWSComponents
 import com.softwaremill.macwire._
-import com.example.impl.eventsourcing.registry.SerializerRegistry
-import com.example.impl.processor.CassandraReadSideProcessor
-import com.example.impl.repository.CassandraDatabase
+import play.api.libs.ws.ahc.AhcWSComponents
 
 class ApplicationLoader extends LagomApplicationLoader {
 
@@ -35,6 +36,7 @@ abstract class Application(context: LagomApplicationContext)
 
 
   lazy val jestClient = wire[JestClient]
+  lazy val logHandler = wire[LogHandler]
   override lazy val lagomServer = serverFor[RestServiceApi](wire[RestServiceImpl])
   override lazy val jsonSerializerRegistry = SerializerRegistry
   persistentEntityRegistry.register(wire[Entity])
