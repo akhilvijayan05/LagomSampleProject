@@ -3,7 +3,7 @@ package com.example.impl.kafkaprocessing
 import java.util.Properties
 
 import com.example.impl.utils.constant.Constants
-import com.example.models.{Log, Request, Response}
+import com.example.models.Log
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
@@ -41,8 +41,4 @@ trait Producer {
     producer.close()
     recordMetaData.get().topic()
   }
-}
-
-object MyProducer extends App with Producer {
-  produceData(Log("123", Request("9999","New Json Mesaage"), Response("Json Message")), "NewTopic")
 }

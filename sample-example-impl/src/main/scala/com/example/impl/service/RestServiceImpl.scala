@@ -5,8 +5,7 @@ import com.example.api.RestServiceApi
 import com.example.impl.es.JestClient
 import com.example.impl.eventsourcing.command.NewCommand
 import com.example.impl.eventsourcing.entity.Entity
-import com.example.impl.logs.LogHandler
-import com.example.models.{Log, Request, Response}
+import com.example.models.{Request, Response}
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
 
@@ -18,12 +17,10 @@ class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestCl
   override def postRequest: ServiceCall[Request, Response] = ServiceCall { request: Request =>
 
     val ref = persistentEntityRegistry.refFor[Entity](request.id)
-    val logHandler = new LogHandler()
     val result = ref.ask(NewCommand(request))
     result.map { status =>
       if (status == Done) {
         jestClient.createDocument(request)
-        logHandler.storeLogs(Log("", request, Response(request.message)), "NewTopic")
         Response(s"Got ${request.message}")
       } else {
         Response("Server Error. Please try later..")
