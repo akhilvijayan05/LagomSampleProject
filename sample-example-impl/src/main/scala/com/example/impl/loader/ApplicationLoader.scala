@@ -1,7 +1,7 @@
 package com.example.impl.loader
 
 import com.example.api.RestServiceApi
-import com.example.impl.es.JestClient
+import com.example.impl.elasticsearch.JestClient
 import com.example.impl.eventsourcing.entity.Entity
 import com.example.impl.eventsourcing.event.LagomEvent
 import com.example.impl.eventsourcing.registry.SerializerRegistry
@@ -35,7 +35,7 @@ abstract class Application(context: LagomApplicationContext)
     with CassandraPersistenceComponents {
 
 
-  lazy val jestClient = wire[JestClient]
+//  lazy val jestClient = wire[JestClient]
   lazy val logHandler = wire[LogHandler]
   override lazy val lagomServer = serverFor[RestServiceApi](wire[RestServiceImpl])
   override lazy val jsonSerializerRegistry = SerializerRegistry

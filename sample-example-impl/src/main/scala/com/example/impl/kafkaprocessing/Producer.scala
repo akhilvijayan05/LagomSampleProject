@@ -3,7 +3,7 @@ package com.example.impl.kafkaprocessing
 import java.util.Properties
 
 import com.example.impl.utils.constant.Constants
-import com.example.models.Log
+import com.example.models.{Log, Request, Response}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
@@ -15,7 +15,6 @@ trait Producer {
   val reader = fromURL(getClass.getResource(Constants.KAFKA_CONFIG_FILE)).bufferedReader()
   val props = new Properties()
   val mapper = new ObjectMapper()
-
   props.load(reader)
   val producer = new KafkaProducer[String, JsonNode](props)
 

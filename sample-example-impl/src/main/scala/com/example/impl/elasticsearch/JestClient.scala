@@ -1,4 +1,4 @@
-package com.example.impl.es
+package com.example.impl.elasticsearch
 
 import com.example.impl.utils.constant.Constants
 import com.example.models.Request
@@ -8,15 +8,16 @@ import io.searchbox.core.{Delete, Get, Index, Update}
 import play.api.libs.json.Json
 
 
-class JestClient {
+trait JestClient {
 
-  private val jestClientFactory: JestClientFactory = new JestClientFactory()
+  val jestClientFactory: JestClientFactory = new JestClientFactory()
+  lazy val address = Constants.ADDRESS
   jestClientFactory.setHttpClientConfig(new HttpClientConfig
-  .Builder(Constants.ADDRESS)
+  .Builder(address)
     .multiThreaded(true)
     .build())
 
-  private val jestClient = jestClientFactory.getObject
+  val jestClient = jestClientFactory.getObject
 
   def createDocument(request: Request): String = {
     val jsonData = Json.toJson(request).toString()

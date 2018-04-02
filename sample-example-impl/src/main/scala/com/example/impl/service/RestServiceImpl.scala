@@ -2,7 +2,7 @@ package com.example.impl.service
 
 import akka.Done
 import com.example.api.RestServiceApi
-import com.example.impl.es.JestClient
+import com.example.impl.elasticsearch.JestClient
 import com.example.impl.eventsourcing.command.NewCommand
 import com.example.impl.eventsourcing.entity.Entity
 import com.example.impl.logs.LogHandler
@@ -13,7 +13,7 @@ import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestClient: JestClient, logHandler: LogHandler)(implicit ec: ExecutionContext) extends RestServiceApi {
+class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, logHandler: LogHandler)(implicit ec: ExecutionContext) extends RestServiceApi with JestClient {
 
   override def postRequest: ServiceCall[Request, Response] = ServiceCall { request: Request =>
 
@@ -21,7 +21,7 @@ class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestCl
     val result = ref.ask(NewCommand(request))
     result.map { status =>
       if (status == Done) {
-        jestClient.createDocument(request)
+        createDocument(request)
         logHandler.storeLogs("", request, Response("Message"), "TestTopic")
         Response(s"Got ${request.message}")
       } else {
@@ -33,6 +33,6 @@ class RestServiceImpl(persistentEntityRegistry: PersistentEntityRegistry, jestCl
 
   override def getRequest: ServiceCall[Request, Request] = ServiceCall { request: Request =>
 
-    Future(jestClient.getDocument(request))
+    Future(getDocument(request))
   }
 }
